@@ -1,8 +1,9 @@
 package scheduler.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public abstract class Task {
+public abstract class Task implements Serializable {
     private String title;
     private int priority;
     private LocalDateTime deadline;
