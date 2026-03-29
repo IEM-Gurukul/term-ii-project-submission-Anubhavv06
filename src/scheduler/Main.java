@@ -30,7 +30,14 @@ public class Main {
         while (running) {
             printMenu();
             System.out.print("Choose an option: ");
-            String input = scanner.nextLine().trim();
+            String input;
+            try {
+                input = scanner.nextLine().trim();
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please try again.");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (input) {
                 case "1":
