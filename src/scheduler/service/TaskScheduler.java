@@ -38,11 +38,36 @@ public class TaskScheduler {
     }
 
     public void setPriorityStrategy(PriorityStrategy strategy) {
+        // Rebuild queue with new comparator so existing tasks are ordered by new strategy.
+        List<Task> tasks = new ArrayList<>(taskQueue);
         this.priorityStrategy = strategy;
+        this.taskQueue = new PriorityQueue<>((task1, task2) -> 
+            Integer.compare(priorityStrategy.calculatePriority(task2), 
+                          priorityStrategy.calculatePriority(task1))
+        );
+        this.taskQueue.addAll(tasks);
     }
 
     public int getPriority(Task task) {
         return priorityStrategy.calculatePriority(task);
+    }
+
+    public List<Task> getTasks() {
+        return new ArrayList<>(taskQueue);
+    }
+
+    public boolean markTaskCompleted(int index) {
+        List<Task> tasks = new ArrayList<>(taskQueue);
+        if (index < 0 || index >= tasks.size()) {
+            return false;
+        }
+        Task task = tasks.get(index);
+        task.setCompleted(true);
+
+        // To keep queue order and state updated, rebuild the priority queue from modified list.
+        taskQueue.clear();
+        taskQueue.addAll(tasks);
+        return true;
     }
 
     private void notifyObservers(Task task) {
