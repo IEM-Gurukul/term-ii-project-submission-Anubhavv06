@@ -1,0 +1,14 @@
+Task (abstract)
+  -> StudyTask
+  -> WorkTask
+  -> PersonalTask
+
+PriorityStrategy
+  -> DeadlinePriorityStrategy
+  -> ImportancePriorityStrategy
+
+TaskObserver
+  -> NotificationService
+
+TaskScheduler
+Main
