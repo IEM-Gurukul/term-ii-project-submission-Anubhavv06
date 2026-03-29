@@ -56,6 +56,23 @@ public class TaskScheduler {
         return new ArrayList<>(taskQueue);
     }
 
+    public void displayTasks() {
+        List<Task> tasks = getTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks available.");
+            return;
+        }
+
+        System.out.println("Current tasks:");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            System.out.println((i + 1) + ". " +
+                task.getTitle() +
+                " | Type: " + task.getTaskType() +
+                " | Priority Score: " + priorityStrategy.calculatePriority(task));
+        }
+    }
+
     public boolean markTaskCompleted(int index) {
         List<Task> tasks = new ArrayList<>(taskQueue);
         if (index < 0 || index >= tasks.size()) {
