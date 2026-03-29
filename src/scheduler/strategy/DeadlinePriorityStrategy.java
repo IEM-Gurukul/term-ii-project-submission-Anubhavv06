@@ -13,7 +13,11 @@ public class DeadlinePriorityStrategy implements PriorityStrategy {
 
     @Override
     public int calculatePriority(Task task) {
+        // Calculate time remaining until task deadline in hours
         long hoursLeft = Duration.between(LocalDateTime.now(), task.getDeadline()).toHours();
-        return (int)(100 - hoursLeft); // closer deadline → higher value
+
+        // Invert deadline distance to produce higher priority for closer deadlines.
+        // This is a simple heuristic: a task due now or overdue gets high score.
+        return (int)(100 - hoursLeft);
     }
 }

@@ -21,8 +21,13 @@ public class Main {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static void main(String[] args) {
+        // Single scanner for the whole program
         Scanner scanner = new Scanner(System.in);
+
+        // Start with importance strategy by default
         TaskScheduler scheduler = new TaskScheduler(new ImportancePriorityStrategy());
+
+        // File persistence helper and filename for save/load
         FileManager fileManager = new FileManager();
         String fileName = "tasks.dat";
 
@@ -30,10 +35,13 @@ public class Main {
         while (running) {
             printMenu();
             System.out.print("Choose an option: ");
+
             String input;
             try {
+                // Read the selected menu option from user
                 input = scanner.nextLine().trim();
             } catch (Exception e) {
+                // Unavoidable error path, flush bad state and try again
                 System.out.println("Invalid input. Please try again.");
                 scanner.nextLine();
                 continue;
@@ -80,6 +88,7 @@ public class Main {
         System.out.println("6. Exit");
     }
 
+    // Prompts user for task details and adds to scheduler
     private static void addTask(Scanner scanner, TaskScheduler scheduler) {
         System.out.println("Choose task type:");
         System.out.println("1. Study");
@@ -88,9 +97,12 @@ public class Main {
         System.out.print("Type: ");
 
         String typeInput = scanner.nextLine().trim();
+
+        // Read title for the new task
         System.out.print("Title: ");
         String title = scanner.nextLine().trim();
 
+        // Read and parse priority. If invalid, abort creation.
         System.out.print("Priority (1-10): ");
         int priority;
         try {
@@ -129,6 +141,7 @@ public class Main {
         System.out.println("Task added: " + task.getTitle());
     }
 
+    // Show current tasks in scheduler (reads from priority queue order)
     private static void viewTasks(TaskScheduler scheduler) {
         List<Task> tasks = scheduler.getTasks();
         if (tasks.isEmpty()) {
